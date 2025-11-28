@@ -1,0 +1,2095 @@
+{
+  "name": "Camila bot",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -112,
+        0
+      ],
+      "id": "0c2649d5-7ef8-47b1-89db-8b80301970fd",
+      "name": "Telegram Trigger",
+      "webhookId": "0c33df36-d892-4b62-b374-0033337c264a",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "12356443-96ce-447f-81f7-04cbea8d4e90",
+              "name": "file_id",
+              "value": "={{ $json.message?.voice?.file_id    || ($json.message?.photo?.length ? $json.message.photo[$json.message.photo.length - 1].file_id : '')    || $json.message?.audio?.file_id    || $json.message?.document?.file_id    || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "06579122-610a-4f38-8ca8-c709d6d2a3ca",
+              "name": "chat_id",
+              "value": "={{ $json.message.chat.id }}",
+              "type": "number"
+            },
+            {
+              "id": "4ce22470-47c4-4bce-898d-df3abfb431cc",
+              "name": "tipo_manesaje",
+              "value": "={{ $json.message?.voice    ? 'voice'    : ($json.message?.photo?.length        ? 'image'        : ($json.message?.text ? 'text' : 'unknown')) }}",
+              "type": "string"
+            },
+            {
+              "id": "ce374c6b-6416-41c1-8fdb-f6b9191284b0",
+              "name": "text_raw",
+              "value": "=={{ $json.message?.text || $json.message?.caption || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        192,
+        0
+      ],
+      "id": "f01b366a-b7a2-4418-b134-e920b76ddeda",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        -1216
+      ],
+      "id": "3af6f35c-fa29-47f4-9eea-e93ad30df5cb",
+      "name": "Get a file",
+      "webhookId": "f04d1bad-ff74-48bc-8a22-4f8a560daafb",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const estructura = $input.item.json;\n\nfunction extraerJSON(estructura) {\n  const resultado = [];\n  \n  function procesar(item) {\n    if (Array.isArray(item)) {\n      item.forEach(procesar);\n    } else if (item && typeof item === 'object') {\n      // Si tiene un campo 'text' que parece JSON, parsearlo\n      if (item.text && typeof item.text === 'string') {\n        try {\n          const parsed = JSON.parse(item.text);\n          resultado.push(parsed);\n        } catch (e) {\n          // No es JSON válido, ignorar\n        }\n      }\n      // Seguir procesando propiedades anidadas\n      Object.values(item).forEach(valor => {\n        if (Array.isArray(valor) || (valor && typeof valor === 'object')) {\n          procesar(valor);\n        }\n      });\n    }\n  }\n  \n  procesar(estructura);\n  return resultado;\n}\n\nreturn extraerJSON(estructura);"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1360,
+        -1216
+      ],
+      "id": "96dc3418-52da-42ab-8af9-f3145aa82649",
+      "name": "Code in JavaScript",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "Devuelve SOLO un JSON (sin backticks, sin texto extra, sin markdown). Estructura y reglas para Colombia (compatible con n8n):\n{\n\"proveedor\": string, // nombre comercial o razón social\n\"fecha\": \"YYYY-MM-DD\" | \"\", // si no aparece clara, devuelve \"\" (no inventes)\n\"concepto\": string, // descripción corta del consumo o servicio\n\"subtotal\": number, // base gravada (sin IVA), usa punto decimal\n\"iva\": number, // valor del IVA (generalmente 19%)\n\"total\": number, // total pagado\n\"moneda\": \"COP\" | \"USD\",\n\"metodo_pago\": \"efectivo\" | \"tarjeta\" | \"transferencia\" | \"datáfono\" | \"desconocido\",\n\"categoria\": string // una sola de: comidas, transporte, software, hospedaje, oficina, servicios, combustible, salud, educación, entretenimiento, supermercado, otros\n}\nReglas:\nEl valor en colombia siempre se devuelve en miles no quites ni recortes los precios\nIVA general en Colombia es 19%. Si no hay desglose,  es 0.\nIgnora ICA, retefuente, descuentos y otros impuestos menores.\nUsa punto como separador decimal; redondea a 2 decimales.\nNo incluyas texto adicional fuera del JSON. No uses markdown ni ```.\nSi dudas de un campo textual, usa la mejor aproximación; si la fecha no es clara, deja \"\".",
+        "inputType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        976,
+        -1216
+      ],
+      "id": "6c953a47-0ff5-49d5-8e78-54feeefa8137",
+      "name": "Analyze an image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Oo7CxGhhpZZ7e2YI",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Get a file').item.json.result.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1712,
+        -1216
+      ],
+      "id": "4814a68f-acb7-4a36-8f60-000cab4d25f1",
+      "name": "Get a file1",
+      "webhookId": "f04d1bad-ff74-48bc-8a22-4f8a560daafb",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "={{ $json.result.file_unique_id }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1R6vjon_EpmkU9nTHVuIxpUopPjT6j1Hq",
+          "mode": "list",
+          "cachedResultName": "facturas",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1R6vjon_EpmkU9nTHVuIxpUopPjT6j1Hq"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2096,
+        -1216
+      ],
+      "id": "d1801f5b-1b1a-4b67-a5b0-bebc5ab82a23",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "mwMioBbQRQcrqzLA",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "478a7769-b22c-45c3-a6a0-30fa56c748ff",
+              "name": "fecha",
+              "value": "={{ $('Code in JavaScript').item.json.fecha }}",
+              "type": "string"
+            },
+            {
+              "id": "75547231-cc96-4677-9836-49f873f4de70",
+              "name": "proveedor",
+              "value": "={{ $('Code in JavaScript').item.json.proveedor }}",
+              "type": "string"
+            },
+            {
+              "id": "9d9e5d32-9502-44a9-aa8b-e7d7a910705b",
+              "name": "concepto",
+              "value": "={{ $('Code in JavaScript').item.json.concepto }}",
+              "type": "string"
+            },
+            {
+              "id": "01fb2fa7-7db9-4c80-894b-d58465583c30",
+              "name": "subtotal",
+              "value": "={{ $('Code in JavaScript').item.json.subtotal }}",
+              "type": "number"
+            },
+            {
+              "id": "0fa7b8da-a7e5-4edc-a083-95b55fbd6e90",
+              "name": "iva",
+              "value": "={{ $('Code in JavaScript').item.json.iva }}",
+              "type": "number"
+            },
+            {
+              "id": "ee4cc9d5-9c7a-40bd-9b7e-5eb8f72abf4c",
+              "name": "total",
+              "value": "={{ $('Code in JavaScript').item.json.total }}",
+              "type": "number"
+            },
+            {
+              "id": "9311b628-67f8-484c-8446-40fdc3b519be",
+              "name": "moneda",
+              "value": "={{ $('Code in JavaScript').item.json.moneda }}",
+              "type": "string"
+            },
+            {
+              "id": "84ce629f-30ef-4609-8134-b4353466ef09",
+              "name": "categoria",
+              "value": "={{ $('Code in JavaScript').item.json.categoria }}",
+              "type": "string"
+            },
+            {
+              "id": "1243baec-0c6c-469a-8cb6-548c189144ba",
+              "name": "webViewLink",
+              "value": "={{ $json.webViewLink }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2400,
+        -1216
+      ],
+      "id": "ca9219da-74a8-4a76-a053-914a712e495a",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "finanzasPersonales",
+          "mode": "list",
+          "cachedResultName": "finanzasPersonales"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "fecha": "={{ $json.fecha }}T00:00:00.000Z",
+            "proveedor": "={{ $json.proveedor }}",
+            "concepto": "={{ $json.concepto }}",
+            "subtotal": "={{ $json.subtotal }}",
+            "iva": "={{ $json.iva }}",
+            "total": "={{ $json.total }}",
+            "moneda": "={{ $json.moneda }}",
+            "categoria": "={{ $json.categoria }}",
+            "webViewLink": "={{ $json.webViewLink }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha",
+              "displayName": "fecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "proveedor",
+              "displayName": "proveedor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "concepto",
+              "displayName": "concepto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "subtotal",
+              "displayName": "subtotal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "iva",
+              "displayName": "iva",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "total",
+              "displayName": "total",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "moneda",
+              "displayName": "moneda",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "categoria",
+              "displayName": "categoria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "webViewLink",
+              "displayName": "webViewLink",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2736,
+        -1216
+      ],
+      "id": "3aff232c-908a-4d9f-bc85-4c321a66cd05",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "K4z2KpxrCRtClEkC",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.tipo_manesaje }}",
+                    "rightValue": "image",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7796b265-8c14-40a5-bf72-5e741c345804"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8891980c-5cc4-4614-b5da-8bcf03965575",
+                    "leftValue": "={{ $json.tipo_manesaje }}",
+                    "rightValue": "text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "eb8f80c0-f9df-4edc-8609-e248bfa2404f",
+                    "leftValue": "={{ $json.tipo_manesaje }}",
+                    "rightValue": "voice",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "vioice"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        400,
+        0
+      ],
+      "id": "71c8490e-414d-4898-9cbe-4eed18b1b2a0",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "=Has añadido un gasto con los siguientes detalles:\n• Proveedor: {{ $json.proveedor }}\n• Concepto: {{ $json.concepto }}\n• Valor: {{ $json.total }}\n• Categoría: {{ $json.categoria }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3216,
+        -1232
+      ],
+      "id": "d09aa048-bd80-42cb-b520-21e771ca5a7f",
+      "name": "Send a text message",
+      "webhookId": "5f00030d-c36f-4d15-b0f9-19a2a6fc5b93",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        848,
+        -304
+      ],
+      "id": "aa8b1191-b64e-40bc-99ca-5beec26b0858",
+      "name": "Send a chat action",
+      "webhookId": "317bf6cc-e8f0-4c25-9d82-d5fdaac4b7ee",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.voice_transcription }}{{ $('Edit Fields').item.json.text_raw }}",
+        "options": {
+          "systemMessage": "Eres un planificador de ingresos y consultas. Tu salida SIEMPRE debe ser JSON válido con la misma estructura.\n\nFORMATO DE RESPUESTA (SIEMPRE):\n{\n  \"intent\": \"tipo_de_intencion\",\n  \"action\": \"accion_a_realizar\",\n  \"message\": \"mensaje_opcional_para_usuario\",\n  \"data\": {}\n}\n\nINTENCIONES:\n\n1. INGRESAR INGRESO\n   - Si el mensaje contiene \"ingresar\", \"registrar\", \"agregar ingreso\", \"anotar ingreso\":\n   \n   a) Si NO incluye monto:\n   {\n     \"intent\": \"ingresar_ingreso\",\n     \"action\": \"request_amount\",\n     \"message\": \"¿Cuál es el monto del ingreso?\",\n     \"data\": null\n   }\n   \n   b) Si incluye monto:\n   {\n     \"intent\": \"ingresar_ingreso\",\n     \"action\": \"insert\",\n     \"message\": null,\n     \"data\": {\n       \"amount\": número\n     }\n   }\n\n2. CONSULTAR\n   - Si el usuario quiere ver, listar, sumar o filtrar datos:\n   {\n     \"intent\": \"consultar\",\n     \"action\": \"query\",\n     \"message\": null,\n     \"data\": {\n       \"filters\": [...],\n       \"range\": {...},\n       \"group_by\": opcional,\n       \"limit\": opcional\n     }\n   }\n\nREGLAS IMPORTANTES PARA CONSULTAS:\n\n- **INGRESOS**: Siempre agregar filtro: { \"column\": \"categoria\", \"op\": \"equals\", \"value\": \"INGRESO\" }\n- **GASTOS**: Siempre agregar filtro: { \"column\": \"categoria\", \"op\": \"not_equals\", \"value\": \"INGRESO\" }\n- **TOTAL**: No usar \"limit\", dejar que sume todo\n- **PROVEEDOR/EMPRESA**: Usar filtro con \"op\": \"contains\"\n\nCOLUMNAS DISPONIBLES:\n- fecha (tipo: date)\n- proveedor (tipo: text)\n- concepto (tipo: text)\n- subtotal (tipo: numeric)\n- iva (tipo: numeric)\n- total (tipo: numeric)\n- moneda (tipo: text)\n- categoria (tipo: text) → VALORES: \"INGRESO\" o nombres de categorías de gastos\n\nPRESETS DE FECHA:\n- \"hoy\", \"ayer\", \"esta_semana\", \"este_mes\", \"mes_pasado\", \"este_anio\", \"ultimos_7_dias\", \"ultimos_30_dias\"\n\nEJEMPLOS:\n\nUsuario: \"total de ingresos\"\n→ {\n     \"intent\": \"consultar\",\n     \"action\": \"query\",\n     \"message\": null,\n     \"data\": {\n       \"filters\": [\n         { \"column\": \"categoria\", \"op\": \"equals\", \"value\": \"INGRESO\" }\n       ],\n       \"range\": { \"preset\": \"este_mes\" }\n     }\n   }\n\nUsuario: \"total de ingresos de este año\"\n→ {\n     \"intent\": \"consultar\",\n     \"action\": \"query\",\n     \"message\": null,\n     \"data\": {\n       \"filters\": [\n         { \"column\": \"categoria\", \"op\": \"equals\", \"value\": \"INGRESO\" }\n       ],\n       \"range\": { \"preset\": \"este_anio\" }\n     }\n   }\n\nUsuario: \"gastos de Uber\"\n→ {\n     \"intent\": \"consultar\",\n     \"action\": \"query\",\n     \"message\": null,\n     \"data\": {\n       \"filters\": [\n         { \"column\": \"proveedor\", \"op\": \"contains\", \"value\": \"Uber\" },\n         { \"column\": \"categoria\", \"op\": \"not_equals\", \"value\": \"INGRESO\" }\n       ],\n       \"range\": { \"preset\": \"este_mes\" }\n     }\n   }\n\nUsuario: \"gastos de comidas este mes\"\n→ {\n     \"intent\": \"consultar\",\n     \"action\": \"query\",\n     \"message\": null,\n     \"data\": {\n       \"filters\": [\n         { \"column\": \"categoria\", \"op\": \"equals\", \"value\": \"comidas\" }\n       ],\n       \"range\": { \"preset\": \"este_mes\" }\n     }\n   }\n\nUsuario: \"todos los gastos de este mes\"\n→ {\n     \"intent\": \"consultar\",\n     \"action\": \"query\",\n     \"message\": null,\n     \"data\": {\n       \"filters\": [\n         { \"column\": \"categoria\", \"op\": \"not_equals\", \"value\": \"INGRESO\" }\n       ],\n       \"range\": { \"preset\": \"este_mes\" }\n     }\n   }\n\nUsuario: \"cuánto gasté en noviembre\"\n→ {\n     \"intent\": \"consultar\",\n     \"action\": \"query\",\n     \"message\": null,\n     \"data\": {\n       \"filters\": [\n         { \"column\": \"categoria\", \"op\": \"not_equals\", \"value\": \"INGRESO\" }\n       ],\n       \"range\": { \"preset\": \"mes_pasado\" }\n     }\n   }\n\nUsuario: \"gastos por categoría\"\n→ {\n     \"intent\": \"consultar\",\n     \"action\": \"query\",\n     \"message\": null,\n     \"data\": {\n       \"filters\": [\n         { \"column\": \"categoria\", \"op\": \"not_equals\", \"value\": \"INGRESO\" }\n       ],\n       \"range\": { \"preset\": \"este_mes\" },\n       \"group_by\": \"categoria\"\n     }\n   }\n\nUsuario: \"ingresar 50000\"\n→ {\n     \"intent\": \"ingresar_ingreso\",\n     \"action\": \"insert\",\n     \"message\": null,\n     \"data\": {\n       \"amount\": 50000\n     }\n   }\n\nUsuario: \"ingresar\"\n→ {\n     \"intent\": \"ingresar_ingreso\",\n     \"action\": \"request_amount\",\n     \"message\": \"¿Cuál es el monto del ingreso?\",\n     \"data\": null\n   }\n\nUsuario: \"hola\"\n→ {\n     \"intent\": \"unknown\",\n     \"action\": \"show_help\",\n     \"message\": \"Por favor, envía una imagen para ingresar un gasto, escribe 'ingresar' para registrar un ingreso, o haz una consulta.\",\n     \"data\": null\n   }\n\nUsuario: \"gastos del 22 de noviembre\"\n→ {\n     \"intent\": \"consultar\",\n     \"action\": \"query\",\n     \"message\": null,\n     \"data\": {\n       \"filters\": [\n         { \"column\": \"categoria\", \"op\": \"not_equals\", \"value\": \"INGRESO\" }\n       ],\n       \"range\": { \n         \"start\": \"2024-11-22\",\n         \"end\": \"2024-11-22\"\n       }\n     }\n   }\n\nUsuario: \"ingresos del 26 de noviembre\"\n→ {\n     \"intent\": \"consultar\",\n     \"action\": \"query\",\n     \"message\": null,\n     \"data\": {\n       \"filters\": [\n         { \"column\": \"categoria\", \"op\": \"equals\", \"value\": \"INGRESO\" }\n       ],\n       \"range\": { \n         \"start\": \"2024-11-26\",\n         \"end\": \"2024-11-26\"\n       }\n     }\n   }\n\nUsuario: \"gastos entre el 20 y 25 de noviembre\"\n→ {\n     \"intent\": \"consultar\",\n     \"action\": \"query\",\n     \"message\": null,\n     \"data\": {\n       \"filters\": [\n         { \"column\": \"categoria\", \"op\": \"not_equals\", \"value\": \"INGRESO\" }\n       ],\n       \"range\": { \n         \"start\": \"2024-11-20\",\n         \"end\": \"2024-11-25\"\n       }\n     }\n   }\n\nIMPORTANTE: \n- Si mencionan una fecha concreta (ej: \"22 de noviembre\", \"26/11\"), usar range con start y end iguales\n- Formato de fechas: YYYY-MM-DD (ej: \"2024-11-22\")\n- Si mencionan un rango (ej: \"entre el 20 y 25\"), usar start y end diferentes\n- El año actual es 2024 (a menos que especifiquen otro)\n- Si solo dicen el día sin mes, asumir el mes actual\n- Cuando pregunten por \"ingresos\" o \"total de ingresos\", SIEMPRE filtrar por categoria = \"INGRESO\"\n- Cuando pregunten por \"gastos\", SIEMPRE filtrar por categoria != \"INGRESO\"  \n- Cuando pregunten por una categoría específica (comidas, transporte, etc), usar equals con esa categoría\n- Si no mencionan el período, usar { \"preset\": \"este_mes\" }\n- Para \"cuánto gasté\" o \"total gastado\", es un gasto, filtrar categoria != \"INGRESO\"\n- NUNCA devuelvas texto plano. SIEMPRE devuelve el JSON completo con todos los campos.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        1264,
+        -352
+      ],
+      "id": "3b050193-03ed-4082-9df3-e8975e7aa6ad",
+      "name": "AI Agent",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1248,
+        -160
+      ],
+      "id": "771a27c5-04da-49b1-a32b-80caedcc5830",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Oo7CxGhhpZZ7e2YI",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.from.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1360,
+        -144
+      ],
+      "id": "44508cb5-339c-4a0e-83e4-dad8ad518693",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "ingresar_ingreso",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "dfef1868-97ed-4c47-9b39-daf0b5342808"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "ingresar"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3ec666b1-abfa-4a3a-ad6b-8a406bd960df",
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "consultar",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "consultar"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7a06f0bc-9761-4854-80b6-20db3c010436",
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "unknown",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "default"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "none"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        2480,
+        -400
+      ],
+      "id": "ae437cc5-fc52-4d0b-8e7f-62cdc9a6e1ea",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener la respuesta del AI Agent\nconst aiResponse = $input.item.json;\n\nlet parsedResponse;\n\ntry {\n  let outputText = aiResponse.output;\n  \n  // Si viene como string\n  if (typeof outputText === 'string') {\n    // Remover bloques de código markdown (```json ... ``` o ``` ... ```)\n    outputText = outputText\n      .replace(/```json\\n?/g, '')\n      .replace(/```\\n?/g, '')\n      .replace(/\\\\n/g, '')\n      .replace(/\\\\\"/g, '\"')\n      .trim();\n    \n    // Parsear el JSON limpio\n    parsedResponse = JSON.parse(outputText);\n  } else {\n    parsedResponse = outputText;\n  }\n  \n  // Validar estructura\n  if (!parsedResponse.intent || !parsedResponse.action) {\n    throw new Error('Formato inválido: falta intent o action');\n  }\n  \n  // Retornar normalizado\n  return {\n    json: {\n      intent: parsedResponse.intent,\n      action: parsedResponse.action,\n      message: parsedResponse.message || null,\n      data: parsedResponse.data || null\n    }\n  };\n  \n} catch (error) {\n  console.error('Error:', error.message);\n  console.error('Output original:', aiResponse.output);\n  \n  return {\n    json: {\n      intent: 'error',\n      action: 'show_message',\n      message: 'Error procesando la respuesta del AI. Por favor intenta de nuevo.',\n      data: null,\n      debug: {\n        error: error.message,\n        original: aiResponse.output\n      }\n    }\n  };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1664,
+        -384
+      ],
+      "id": "01219075-dc6b-4137-94cf-1f362949724f",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=Hola {{ $('Telegram Trigger').item.json.message.from.first_name }}, {{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "reply_to_message_id": "={{ $('Telegram Trigger').item.json.message.message_id }}"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2560,
+        -80
+      ],
+      "id": "8480b7e3-6788-4394-bf61-a2e1e143a273",
+      "name": "Send a text message1",
+      "webhookId": "83b511f8-612e-4847-95f9-b5d84a2d0835",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "insert",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "0c8ea7fa-1181-47e1-834c-a7490b85a96b"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "insertar_bd"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "2a3aa73e-6fc9-4999-bcef-c74119102636",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "request_amount",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pedir_monto"
+            }
+          ]
+        },
+        "looseTypeValidation": "={{ false }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        2896,
+        -528
+      ],
+      "id": "40cd1907-b8a9-4e6c-8a5b-029506d4d66d",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "finanzasPersonales",
+          "mode": "list",
+          "cachedResultName": "finanzasPersonales"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "fecha": "={{ new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' })).toISOString() }}",
+            "proveedor": "BANCOLOMBIA",
+            "concepto": "TRANSFERENCIA BANCARIA",
+            "subtotal": 0,
+            "iva": 0,
+            "moneda": "COP",
+            "categoria": "INGRESO",
+            "total": "={{ $json.data.amount }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha",
+              "displayName": "fecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "proveedor",
+              "displayName": "proveedor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "concepto",
+              "displayName": "concepto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "subtotal",
+              "displayName": "subtotal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "iva",
+              "displayName": "iva",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "total",
+              "displayName": "total",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "moneda",
+              "displayName": "moneda",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "categoria",
+              "displayName": "categoria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "webViewLink",
+              "displayName": "webViewLink",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3328,
+        -848
+      ],
+      "id": "9f9fb0f7-e91f-495a-a047-ae4aa0c769a3",
+      "name": "INSERT IN DB",
+      "credentials": {
+        "postgres": {
+          "id": "K4z2KpxrCRtClEkC",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=✅ ¡Ingreso registrado!  💰 Monto: ${{ Number($json.total).toLocaleString() }} {{ $json.moneda }} 🏦 Proveedor: {{ $json.proveedor }} 📝 Concepto: {{ $json.concepto }} 📅 Fecha: {{ $json.fecha.split('T')[0] }} ",
+        "additionalFields": {
+          "appendAttribution": false,
+          "reply_to_message_id": "={{ $('Telegram Trigger').item.json.message.message_id }}"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        4288,
+        -992
+      ],
+      "id": "523571a9-9cf3-4ec2-a890-09ed1656e626",
+      "name": "Send a text message2",
+      "webhookId": "b6b09a69-99a5-4139-99c4-585aeab490ea",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "reply_to_message_id": "={{ $('Telegram Trigger').item.json.message.message_id }}"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3392,
+        -432
+      ],
+      "id": "34516956-9323-45b6-81c4-b97a6071d552",
+      "name": "Send a text message3",
+      "webhookId": "10bbbf99-ee71-4c9c-a541-a18e9bbbcf93",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3008,
+        -1216
+      ],
+      "id": "a5e51f2b-b521-4ea2-8b6c-88a2c73bb225",
+      "name": "Send a chat action1",
+      "webhookId": "ecc0d10e-010b-4bee-8aee-32d91330f76b",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json.data;\n\n// Construir SELECT\nlet select = 'SELECT fecha, proveedor, concepto, subtotal, iva, total, moneda, categoria';\n\n// Agregar agregaciones si hay group_by\nif (data.group_by) {\n  switch (data.group_by) {\n    case 'proveedor':\n      select = 'SELECT proveedor, SUM(total) as total, COUNT(*) as cantidad';\n      break;\n    case 'categoria':\n      select = 'SELECT categoria, SUM(total) as total, COUNT(*) as cantidad';\n      break;\n    case 'mes':\n      select = \"SELECT DATE_TRUNC('month', fecha) as mes, SUM(total) as total, COUNT(*) as cantidad\";\n      break;\n  }\n}\n\n// FROM - CON COMILLAS DOBLES PARA RESPETAR MAYÚSCULAS\nlet from = 'FROM \"finanzasPersonales\"';\n\n// WHERE - Construir condiciones\nlet whereConditions = [];\nlet params = {};\nlet paramCounter = 1;\n\n// Procesar filtros\nif (data.filters && data.filters.length > 0) {\n  data.filters.forEach(filter => {\n    const paramName = `param${paramCounter}`;\n    \n    switch (filter.op) {\n      case 'contains':\n        whereConditions.push(`${filter.column} ILIKE '%${filter.value}%'`);\n        break;\n      case 'equals':\n      case '=':\n        whereConditions.push(`${filter.column} = '${filter.value}'`);\n        break;\n      case 'not_equals':\n      case '!=':\n        whereConditions.push(`${filter.column} != '${filter.value}'`);\n        break;\n      case '>':\n        whereConditions.push(`${filter.column} > ${filter.value}`);\n        break;\n      case '<':\n        whereConditions.push(`${filter.column} < ${filter.value}`);\n        break;\n      case '>=':\n        whereConditions.push(`${filter.column} >= ${filter.value}`);\n        break;\n      case '<=':\n        whereConditions.push(`${filter.column} <= ${filter.value}`);\n        break;\n    }\n    paramCounter++;\n  });\n}\n\n// Procesar rangos de fecha\nif (data.range) {\n  if (data.range.preset) {\n    switch (data.range.preset) {\n      case 'hoy':\n        whereConditions.push(\"fecha = CURRENT_DATE\");\n        break;\n      case 'ayer':\n        whereConditions.push(\"fecha = CURRENT_DATE - INTERVAL '1 day'\");\n        break;\n      case 'esta_semana':\n        whereConditions.push(\"fecha >= DATE_TRUNC('week', CURRENT_DATE)\");\n        whereConditions.push(\"fecha < DATE_TRUNC('week', CURRENT_DATE) + INTERVAL '1 week'\");\n        break;\n      case 'este_mes':\n        whereConditions.push(\"fecha >= DATE_TRUNC('month', CURRENT_DATE)\");\n        whereConditions.push(\"fecha < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'\");\n        break;\n      case 'mes_pasado':\n        whereConditions.push(\"fecha >= DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month'\");\n        whereConditions.push(\"fecha < DATE_TRUNC('month', CURRENT_DATE)\");\n        break;\n      case 'este_anio':\n        whereConditions.push(\"fecha >= DATE_TRUNC('year', CURRENT_DATE)\");\n        whereConditions.push(\"fecha < DATE_TRUNC('year', CURRENT_DATE) + INTERVAL '1 year'\");\n        break;\n      case 'ultimos_7_dias':\n        whereConditions.push(\"fecha >= CURRENT_DATE - INTERVAL '7 days'\");\n        break;\n      case 'ultimos_30_dias':\n        whereConditions.push(\"fecha >= CURRENT_DATE - INTERVAL '30 days'\");\n        break;\n    }\n  } else if (data.range.start && data.range.end) {\n    whereConditions.push(`fecha >= '${data.range.start}'`);\n    whereConditions.push(`fecha <= '${data.range.end}'`);\n  }\n}\n\n// Construir WHERE clause\nlet where = whereConditions.length > 0 \n  ? 'WHERE ' + whereConditions.join(' AND ')\n  : '';\n\n// GROUP BY\nlet groupBy = '';\nif (data.group_by) {\n  switch (data.group_by) {\n    case 'proveedor':\n      groupBy = 'GROUP BY proveedor';\n      break;\n    case 'categoria':\n      groupBy = 'GROUP BY categoria';\n      break;\n    case 'mes':\n      groupBy = 'GROUP BY DATE_TRUNC(\\'month\\', fecha)';\n      break;\n  }\n}\n\n// ORDER BY\nlet orderBy = data.group_by \n  ? 'ORDER BY total DESC'\n  : 'ORDER BY fecha DESC';\n\n// LIMIT\nlet limit = data.limit ? `LIMIT ${data.limit}` : 'LIMIT 50';\n\n// Construir query completo\nconst query = `${select} ${from} ${where} ${groupBy} ${orderBy} ${limit}`;\n\n// Retornar\nreturn {\n  json: {\n    query: query,\n    params: params,\n    original_data: data\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3184,
+        240
+      ],
+      "id": "8dd73ee1-590c-4544-925f-ba3d7ef662a1",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{ $json.query }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        3472,
+        224
+      ],
+      "id": "640fe6b1-1ce9-4067-8a03-0b51295aa5b5",
+      "name": "Execute a SQL query",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "K4z2KpxrCRtClEkC",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const results = $input.all();\n\nif (!results || results.length === 0) {\n  return {\n    json: {\n      message: '❌ No se encontraron resultados para tu consulta.'\n    }\n  };\n}\n\n// Calcular totales\nlet totalSum = 0;\nlet count = results.length;\n\nlet message = `📊 *Resultados de consulta*\\n\\n`;\nmessage += `📝 Registros encontrados: ${count}\\n\\n`;\n\n// Limitar a 10 registros para que el mensaje no sea muy largo\nconst maxResults = Math.min(count, 10);\n\nfor (let i = 0; i < maxResults; i++) {\n  const data = results[i].json;\n  const total = parseFloat(data.total || 0);\n  totalSum += total;\n  \n  const fecha = data.fecha ? data.fecha.split('T')[0] : 'N/A';\n  \n  message += `${i + 1}. 📅 ${fecha}\\n`;\n  message += `   🏦 ${data.proveedor || 'N/A'}\\n`;\n  message += `   📋 ${data.concepto || 'N/A'}\\n`;\n  message += `   💰 $${total.toLocaleString('es-CO')} ${data.moneda || 'COP'}\\n`;\n  message += `   🏷️ ${data.categoria || 'N/A'}\\n\\n`;\n}\n\nif (count > maxResults) {\n  message += `_... y ${count - maxResults} registros más_\\n\\n`;\n}\n\nmessage += `━━━━━━━━━━━━━━━━\\n`;\nmessage += `💵 *Total: $${totalSum.toLocaleString('es-CO')} COP*`;\n\nreturn {\n  json: {\n    message: message,\n    total: totalSum,\n    count: count\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3680,
+        224
+      ],
+      "id": "74a5ab38-fc72-4360-9eb0-f449275657d1",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        4368,
+        -160
+      ],
+      "id": "0b696bca-ef0d-4c32-9ac7-f3c251942c7d",
+      "name": "Send a chat action2",
+      "webhookId": "3e952a14-eb4c-40b1-b42b-2f5806ef8a0a",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "={{ $('Code in JavaScript3').item.json.message }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "reply_to_message_id": "={{ $('Telegram Trigger').first().json.message.message_id }}"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        4592,
+        -160
+      ],
+      "id": "e1868028-cf87-442c-8942-b4c4b812742e",
+      "name": "Send a text message4",
+      "webhookId": "6df51877-d9c5-4fb1-9eed-49c5821f465f",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "action": "record_audio"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        624,
+        832
+      ],
+      "id": "838bde8d-6ee4-47df-9298-01142e646bbe",
+      "name": "Send a chat action3",
+      "webhookId": "f3beba3a-7a21-4077-84f5-ddf3a914a337",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger').item.json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        896,
+        832
+      ],
+      "id": "f4342ce4-0a13-44c0-aca6-83e996cc6191",
+      "name": "descargar nota de voz",
+      "webhookId": "c5760c38-af9b-46eb-89b8-2ef046c9dd9f",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "inputType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1312,
+        880
+      ],
+      "id": "2104cdfd-0d24-4f3f-b626-61922f4c9510",
+      "name": "Transcribe a recording",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Oo7CxGhhpZZ7e2YI",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "64f2ae72-2ffa-414d-b334-bcf515d06c79",
+              "name": "voice_transcription",
+              "value": "={{ $json.content.parts[0].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1728,
+        608
+      ],
+      "id": "a73534a2-e82e-4401-ba1c-d465c89cbbb4",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "93e6e7c1-2f41-4960-9e4f-fa44f165e3b2",
+              "leftValue": "={{ $('Edit Fields').item.json.tipo_manesaje }}",
+              "rightValue": "voice",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3104,
+        -432
+      ],
+      "id": "06012a15-dfc6-4ee2-8674-c46c0f90684c",
+      "name": "es audio?"
+    },
+    {
+      "parameters": {
+        "resource": "speech",
+        "voice": {
+          "__rl": true,
+          "value": "qT1zlDAVPK36nkOuvo7T",
+          "mode": "list",
+          "cachedResultName": "danielRamirez"
+        },
+        "text": "¿Cuál es el monto del ingreso?",
+        "additionalOptions": {
+          "outputFormat": "mp3_44100_32",
+          "languageCode": "es"
+        },
+        "requestOptions": {}
+      },
+      "type": "@elevenlabs/n8n-nodes-elevenlabs.elevenLabs",
+      "typeVersion": 1,
+      "position": [
+        3424,
+        -256
+      ],
+      "id": "ca6d8b70-d649-4f0f-a838-42d0e0155b70",
+      "name": "Convert text to speech",
+      "credentials": {
+        "elevenLabsApi": {
+          "id": "JMBrUzF1eWBAWiyU",
+          "name": "ElevenLabs account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAudio",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "binaryData": true,
+        "additionalFields": {
+          "reply_to_message_id": "={{ $('Telegram Trigger').item.json.message.message_id }}"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3632,
+        -256
+      ],
+      "id": "fe4c51c3-0024-4389-8255-120582fc4034",
+      "name": "Send an audio file",
+      "webhookId": "b98f1efc-d6d6-4baf-9611-f19bf1bff75e",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9927301b-f1be-4fe8-b116-26738dc0311d",
+              "leftValue": "={{ $('Switch').item.json.tipo_manesaje }}",
+              "rightValue": "voice",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3888,
+        224
+      ],
+      "id": "6092228b-7ac6-4f72-a979-6b1caede8d60",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "speech",
+        "voice": {
+          "__rl": true,
+          "value": "qT1zlDAVPK36nkOuvo7T",
+          "mode": "list",
+          "cachedResultName": "danielRamirez"
+        },
+        "text": "={{ $('Code in JavaScript3').item.json.message }}\n",
+        "additionalOptions": {},
+        "requestOptions": {}
+      },
+      "type": "@elevenlabs/n8n-nodes-elevenlabs.elevenLabs",
+      "typeVersion": 1,
+      "position": [
+        4368,
+        320
+      ],
+      "id": "fd83c74c-cfea-4d3e-85f1-ebd8e27483eb",
+      "name": "Convert text to speech1",
+      "credentials": {
+        "elevenLabsApi": {
+          "id": "JMBrUzF1eWBAWiyU",
+          "name": "ElevenLabs account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "action": "record_audio"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        4096,
+        320
+      ],
+      "id": "ed6d784e-4f19-4d90-a820-f83be6a7d9f2",
+      "name": "Send a chat action4",
+      "webhookId": "d456e2b6-ed2e-4dbc-9f1e-b989443c0570",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAudio",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "binaryData": true,
+        "binaryPropertyName": "=data",
+        "additionalFields": {
+          "reply_to_message_id": "={{ $('Telegram Trigger').item.json.message.message_id }}",
+          "title": "=mensaje de voz"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        4656,
+        320
+      ],
+      "id": "70e5188b-ef50-471d-81d9-037b123828b2",
+      "name": "Send an audio file1",
+      "webhookId": "7ebb84d9-bac1-4cfd-909d-30662fb022e5",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9fa23be7-d441-435e-93ba-62ee69a240a9",
+              "leftValue": "={{ $('Edit Fields').item.json.tipo_manesaje }}",
+              "rightValue": "voice",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3616,
+        -896
+      ],
+      "id": "e0af7673-b39e-456c-92d6-2c76f090e5ad",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "action": "record_audio"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3824,
+        -800
+      ],
+      "id": "8b4fb0f2-e7c1-4e71-a6bb-e012aec0d444",
+      "name": "Send a chat action5",
+      "webhookId": "825f8366-7526-4786-bc58-9ffc29d7b167",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "speech",
+        "voice": {
+          "__rl": true,
+          "value": "qT1zlDAVPK36nkOuvo7T",
+          "mode": "list",
+          "cachedResultName": "danielRamirez"
+        },
+        "text": "=Perfecto, quedó registrado un ingreso por {{ Number($('INSERT IN DB').item.json.total).toLocaleString() }}, con fecha de {{ $('INSERT IN DB').item.json.fecha.split('T')[0] }}",
+        "additionalOptions": {},
+        "requestOptions": {}
+      },
+      "type": "@elevenlabs/n8n-nodes-elevenlabs.elevenLabs",
+      "typeVersion": 1,
+      "position": [
+        4048,
+        -752
+      ],
+      "id": "e834152c-bfa7-42e4-ba57-892012636899",
+      "name": "Convert text to speech2",
+      "credentials": {
+        "elevenLabsApi": {
+          "id": "JMBrUzF1eWBAWiyU",
+          "name": "ElevenLabs account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAudio",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "binaryData": true,
+        "additionalFields": {
+          "reply_to_message_id": "={{ $('Telegram Trigger').item.json.message.message_id }}",
+          "title": "mensaje de voz"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        4256,
+        -752
+      ],
+      "id": "571b1323-e3d8-4e44-a423-c17e255c03a0",
+      "name": "Send an audio file2",
+      "webhookId": "4d962736-c523-4394-854a-3b035d2e41ee",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c38b4011-4bbf-48dc-8fb4-3720df65a2b2",
+              "leftValue": "={{ $('Edit Fields').item.json.tipo_manesaje }}",
+              "rightValue": "voice",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2176,
+        256
+      ],
+      "id": "22a98b3e-08e4-4e5c-9548-36610c8792ab",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "action": "record_audio"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2608,
+        416
+      ],
+      "id": "be15b995-a115-4b00-a59a-4952dd1b8447",
+      "name": "Send a chat action6",
+      "webhookId": "487bd341-1c7b-4df7-b95a-a9362e045d08",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "speech",
+        "voice": {
+          "__rl": true,
+          "value": "qT1zlDAVPK36nkOuvo7T",
+          "mode": "list",
+          "cachedResultName": "danielRamirez"
+        },
+        "text": "=Hola {{ $('Telegram Trigger').item.json.message.chat.first_name }}, {{ $('Code in JavaScript1').item.json.message }}",
+        "additionalOptions": {},
+        "requestOptions": {}
+      },
+      "type": "@elevenlabs/n8n-nodes-elevenlabs.elevenLabs",
+      "typeVersion": 1,
+      "position": [
+        2816,
+        416
+      ],
+      "id": "851bd8aa-bf99-4ab9-b662-92a9660957e2",
+      "name": "Convert text to speech3",
+      "credentials": {
+        "elevenLabsApi": {
+          "id": "JMBrUzF1eWBAWiyU",
+          "name": "ElevenLabs account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAudio",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "binaryData": true,
+        "additionalFields": {
+          "reply_to_message_id": "={{ $('Telegram Trigger').item.json.message.message_id }}",
+          "title": "mensaje de voz"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3024,
+        416
+      ],
+      "id": "25277506-0923-4dd3-a83e-1428881f05b3",
+      "name": "Send an audio file3",
+      "webhookId": "e673553a-d22f-41d8-adf5-fbdae0e9f6d0",
+      "credentials": {
+        "telegramApi": {
+          "id": "degXrv3wcWgyhcda",
+          "name": "CamilaBot"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Analyze an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze an image": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Get a file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file1": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert rows in a table": {
+      "main": [
+        [
+          {
+            "node": "Send a chat action1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a chat action",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a chat action3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a chat action": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "INSERT IN DB",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "es audio?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "INSERT IN DB": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a chat action1": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a chat action2": {
+      "main": [
+        [
+          {
+            "node": "Send a text message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a chat action3": {
+      "main": [
+        [
+          {
+            "node": "descargar nota de voz",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "descargar nota de voz": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "es audio?": {
+      "main": [
+        [
+          {
+            "node": "Send a text message3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Convert text to speech",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert text to speech": {
+      "main": [
+        [
+          {
+            "node": "Send an audio file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a chat action2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a chat action4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a chat action4": {
+      "main": [
+        [
+          {
+            "node": "Convert text to speech1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert text to speech1": {
+      "main": [
+        [
+          {
+            "node": "Send an audio file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Send a text message2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a chat action5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a chat action5": {
+      "main": [
+        [
+          {
+            "node": "Convert text to speech2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert text to speech2": {
+      "main": [
+        [
+          {
+            "node": "Send an audio file2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a chat action6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a chat action6": {
+      "main": [
+        [
+          {
+            "node": "Convert text to speech3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert text to speech3": {
+      "main": [
+        [
+          {
+            "node": "Send an audio file3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ec8158aa-0080-48d5-9fd1-d4774b1f88da",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "04a97b09f46005d0ebb8ed3bcb552465886a3147a71d6f4b0a670e60371cd5d3"
+  },
+  "id": "fykm4uorTsSZnynS",
+  "tags": []
+}

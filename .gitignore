@@ -1,0 +1,27 @@
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# Archivos locales de n8n
+local-files/*
+!local-files/.gitkeep
+
+# Datos de Docker
+*.log
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporales
+*.tmp
+*.bak
+
