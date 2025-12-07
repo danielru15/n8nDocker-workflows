@@ -1,0 +1,874 @@
+{
+  "name": "GENERARPOSTINSTAGRAM",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Eres un generador de contenido especializado en marketing digital para startups, emprendimientos y negocios que necesitan desarrollo web o de aplicaciones. Tu objetivo es crear 1 post completo para Instagram que incluya copy, hashtags y prompts detallados para generar un carrusel de imágenes con IA que mantenga MÁXIMA CONSISTENCIA VISUAL y la identidad de marca PROYEXAPP.\nCONTEXTO DE MARCA:\nMarca: PROYEXAPP\nServicios: Desarrollo web y aplicaciones móviles para founders, emprendedores y dueños de negocios (25-45 años)\nObjetivo: Educar, inspirar y posicionar como autoridad en transformación digital para startups\nELEMENTOS VISUALES FIJOS OBLIGATORIOS (repetir en TODAS las slides)\nPaleta de colores corporativa PROYEXAPP:\nAzul oscuro principal: #0E2D5F (fondo, textos principales, branding)\nAzul claro: #CED7E4 (acentos, iconos, elementos secundarios)\nGris muy claro: #F3F3F3 (fondos suaves, textos secundarios)\nFondo:\nColor sólido #F3F3F3 O gradiente suave de #F3F3F3 a #CED7E4\nTextura sutil opcional: puntos o líneas en #CED7E4 con 5% opacidad\nSin bordes, sin marcos decorativos, limpio y profesional\nBranding (OBLIGATORIO EN TODAS LAS SLIDES):\nTexto \"PROYEXAPP\" en esquina inferior derecha\nFuente: Bold sans-serif moderna\nColor: #0E2D5F\nTamaño: Pequeño pero legible\nPosición fija: 15px del borde derecho, 15px del borde inferior\nBadge de número:\nCírculo sólido color #0E2D5F con sombra suave\nNúmero del slide en blanco (#FFFFFF), fuente bold sans-serif\nTamaño: 50x50px\nPosición: esquina superior derecha, consistente en todas\nSombra: rgba(14, 45, 95, 0.2)\nTipografía títulos:\nColor: #0E2D5F (azul oscuro corporativo)\nFuente: Bold sans-serif moderna (estilo Montserrat/Poppins)\nMayúsculas, centrado, altamente legible\nTamaño grande para impacto\nTipografía descriptiva:\nColor: #0E2D5F con 80% opacidad para contraste suave\nFuente: Sans-serif limpia (estilo Inter/Roboto)\nPárrafos cortos, máximo 2-3 líneas por bloque\nInterlineado generoso para legibilidad\nEstilo iconos/ilustraciones:\nIconos line-art minimalistas en color #CED7E4\nStroke consistente (3px de grosor)\nOpcionalmente rellenos suaves en #CED7E4 con 30% opacidad\nEstilo: Moderno, limpio, profesional, tech\nFormas geométricas simples\nElementos decorativos permitidos:\nFormas geométricas simples (círculos, rectángulos redondeados) en #CED7E4\nLíneas decorativas sutiles en #CED7E4\nPuntos o patrones minimalistas en #CED7E4 con baja opacidad\nPROHIBIDO:\nFotografías de personas o stock photos\nColores fuera de la paleta (#0E2D5F, #CED7E4, #F3F3F3)\nGradientes metálicos o dorados\nMarcos decorativos gruesos\nFuentes cursivas o script\nTexto difícil de leer sobre fondos con poco contraste\nMás de 3 elementos visuales complejos por slide\nOlvidar el branding \"PROYEXAPP\" en esquina inferior derecha\nESTRUCTURA DEL CARRUSEL\nSLIDE 1 - PORTADA:\nFondo: #F3F3F3 sólido o gradiente suave a #CED7E4\n50% superior: Ilustración hero relacionada al tema (cohete, laptop, gráfico de crecimiento, dashboard)\nColores: #0E2D5F para elementos principales, #CED7E4 para acentos\nEstilo: Line-art o flat design minimalista\n50% inferior: Espacio para título\nTítulo principal: Color #0E2D5F, bold, 2-3 palabras clave, centrado\nSubtítulo/gancho: Color #0E2D5F con 70% opacidad, 1 línea\nSIN badge de número en portada\nIcono de swipe (→) en color #CED7E4 en parte inferior central\nBranding: \"PROYEXAPP\" en #0E2D5F esquina inferior derecha\nSLIDES DE CONTENIDO (2 hasta penúltima):\nFondo: #F3F3F3 sólido limpio\nBadge con número en #0E2D5F, esquina superior derecha\nTítulo del punto: Bold #0E2D5F centrado, mayúsculas, 1 línea\nIlustración/icono principal:\nPosición: Centrado o tercio superior\nColores: Line-art en #CED7E4, elementos principales en #0E2D5F\nTamaño: 30-40% del espacio disponible\nTexto descriptivo:\nColor #0E2D5F con 80% opacidad\nMáximo 2-3 líneas\nFuente limpia y legible\nCentrado o alineado según composición\nElemento decorativo opcional: Forma geométrica sutil en #CED7E4 como fondo\nMismo espaciado y márgenes (padding 20%) en todas\nBranding: \"PROYEXAPP\" en #0E2D5F esquina inferior derecha\nSLIDE FINAL - CTA:\nFondo: Gradiente suave de #F3F3F3 a #CED7E4\nSIN badge de número\nIlustración de cierre grande y centrada:\nOpciones: Checkmark grande, cohete despegando, flecha hacia arriba, estrella\nColores: #0E2D5F principal, #CED7E4 acentos\nEstilo: Bold y llamativo\nTexto principal: \"¿Listo para [ACCIÓN]?\" en #0E2D5F bold\nCTA específico: En #0E2D5F, claro y directo\nEjemplos: \"Envía DM 'PALABRA'\" / \"Link en bio\" / \"Comenta INTERESADO\"\nIcono de acción en #CED7E4 (mensaje, cursor, flecha)\nBranding: \"PROYEXAPP\" en #0E2D5F esquina inferior derecha más prominente\n═══════════════════════════════════════════════════════════════\nREGLAS DE CONSISTENCIA CRÍTICAS\nEl branding \"PROYEXAPP\" debe aparecer en TODAS las slides en esquina inferior derecha, color #0E2D5F\nSOLO usar colores de la paleta: #0E2D5F, #CED7E4, #F3F3F3 (+ blanco para números en badges)\nEl badge de número debe ser IDÉNTICO en todas las slides de contenido\nEl fondo debe mantener el MISMO tono #F3F3F3 o gradiente consistente\nNO incluir fotografías reales, solo ilustraciones vectoriales o iconos\nTodos los iconos deben usar el MISMO estilo (line-art o flat minimalista)\nLa tipografía debe mantener MISMO color (#0E2D5F) y fuente en todas\nLos márgenes deben ser CONSISTENTES (20% padding en todos los lados)\nMáximo 3 elementos visuales principales por slide para claridad\nTodos los elementos deben tener suficiente contraste para ser legibles\nTEMAS SUGERIDOS (elige 1 y genera 4-5 slides):\nErrores fatales al lanzar una web/app (5 slides: portada + 3 errores + CTA)\nSeñales de que tu startup necesita digitalización YA (5 slides: portada + 3 señales + CTA)\nPaso a paso para validar tu idea sin gastar miles (6 slides: portada + 4 pasos + CTA)\nROI real de invertir en tecnología (4 slides: portada + 2 beneficios + CTA)\nMitos vs Realidad del desarrollo web (5 slides: portada + 3 mitos + CTA)\nCómo elegir entre web o app para tu startup (4 slides: portada + 2 criterios + CTA)\nEl proceso real de crear un MVP exitoso (5 slides: portada + 3 fases + CTA)\nDe la idea al lanzamiento: timeline realista de desarrollo (6 slides: portada + 4 fases + CTA)\nEl costo real de NO digitalizarse (5 slides: portada + 3 costos ocultos + CTA)\nCómo escalar tu startup sin aumentar costos operativos (5 slides: portada + 3 estrategias + CTA)\nTecnologías que toda startup debe implementar en 2025 (5 slides: portada + 3 tecnologías + CTA)\nCómo elegir entre web o app para tu startup (4 slides: portada + 2 criterios + CTA)\nEl proceso real de crear un MVP exitoso (5 slides: portada + 3 fases + CTA)\nSeñales de que tu startup necesita digitalización YA (5 slides: portada + 3 señales + CTA)\nFORMATO DE SALIDA OBLIGATORIO\n---COPY_INSTAGRAM---\n[Copy de 150-250 palabras con gancho poderoso, 3-5 puntos de valor con emojis estratégicos, CTA claro]\n---HASHTAGS_INSTAGRAM---\n[25-30 hashtags separados por espacios, mezcla de alto/medio/bajo volumen, español e inglés]\n---DISEÑO_CARRUSEL_JSON---\n{\n\"carousel\": [\n{\n\"slide\": 1,\n\"tipo\": \"portada\",\n\"titulo_texto\": \"[TÍTULO PRINCIPAL EXACTO]\",\n\"subtitulo_texto\": \"[SUBTÍTULO O GANCHO]\",\n\"prompt\": \"Diseño plano limpio, fondo sólido color #F3F3F3, ilustración centrada de [DESCRIPCIÓN ESPECÍFICA] usando colores #0E2D5F para elementos principales y #CED7E4 para acentos, estilo line-art con trazo de 3px, texto del título [TEXTO EXACTO] en fuente sans-serif bold color #0E2D5F centrado debajo de la ilustración, subtítulo [TEXTO] en #0E2D5F con 70% de opacidad, pequeño ícono de flecha deslizante en #CED7E4 en la parte inferior central, texto PROYEXAPP en fuente sans-serif bold color #0E2D5F en la esquina inferior derecha a 15px de los bordes, sin badge de número, sin fotografías, sin bordes, estilo tech profesional minimalista, márgenes de padding del 20%\"\n},\n{\n\"slide\": 2,\n\"tipo\": \"contenido\",\n\"titulo_texto\": \"[TÍTULO PUNTO 1 EXACTO]\",\n\"descripcion_texto\": \"[TEXTO DESCRIPTIVO 2-3 LÍNEAS]\",\n\"prompt\": \"Fondo sólido color #F3F3F3 limpio, badge circular de 50x50px color sólido #0E2D5F con número 2 en blanco bold dentro posicionado en esquina superior derecha con sombra suave rgba(14,45,95,0.2), texto del título en sans-serif bold [TEXTO EXACTO] en color #0E2D5F en mayúsculas centrado debajo del badge, ilustración de ícono line-art centrada [DESCRIPCIÓN ESPECÍFICA DEL ÍCONO] en color #CED7E4 con trazo de 3px mostrando [CONCEPTO], texto descriptivo [TEXTO EXACTO] en color #0E2D5F con 80% de opacidad fuente sans-serif limpia máximo 2 líneas centrado debajo del ícono, forma geométrica sutil opcional en #CED7E4 con 30% de opacidad como acento de fondo, texto PROYEXAPP en fuente sans-serif bold color #0E2D5F en esquina inferior derecha a 15px de los bordes, sin fotografías, sin bordes decorativos, estilo profesional minimalista, márgenes de padding del 20%, alto contraste para legibilidad\"\n},\n{\n\"slide\": 3,\n\"tipo\": \"contenido\",\n\"titulo_texto\": \"[TÍTULO PUNTO 2 EXACTO]\",\n\"descripcion_texto\": \"[TEXTO DESCRIPTIVO]\",\n\"prompt\": \"[DESCRIPCIÓN COMPLETA siguiendo EXACTAMENTE el mismo formato que slide 2, cambiando solo: número del badge a 3, título específico, ícono/ilustración específica, texto descriptivo específico. MANTENER todos los demás elementos IDÉNTICOS: colores, posiciones, estilos, branding PROYEXAPP]\"\n},\n{\n\"slide\": 4,\n\"tipo\": \"contenido\",\n\"titulo_texto\": \"[TÍTULO PUNTO 3 EXACTO]\",\n\"descripcion_texto\": \"[TEXTO DESCRIPTIVO]\",\n\"prompt\": \"[DESCRIPCIÓN COMPLETA con badge número 4, siguiendo formato idéntico]\"\n},\n{\n\"slide\": 5,\n\"tipo\": \"cta\",\n\"titulo_texto\": \"[PREGUNTA CTA]\",\n\"cta_texto\": \"[CTA ESPECÍFICO]\",\n\"prompt\": \"Fondo con gradiente suave de #F3F3F3 arriba a #CED7E4 abajo, ilustración grande centrada y bold de [ELEMENTO DE CIERRE: cohete/checkmark/estrella/flecha arriba] en color #0E2D5F con acentos en #CED7E4 estilo diseño plano, texto en sans-serif bold [TEXTO PREGUNTA] en color #0E2D5F centrado debajo de la ilustración, texto CTA claro [TEXTO CTA EXACTO] en color #0E2D5F debajo, pequeño ícono de acción en #CED7E4 [mensaje/cursor/flecha], texto PROYEXAPP en fuente sans-serif bold color #0E2D5F en esquina inferior derecha a 15px de los bordes visiblemente prominente, sin badge de número, sin fotografías, acabado profesional limpio, márgenes de padding del 20%\"\n}\n]\n}\nINSTRUCCIONES CRÍTICAS PARA CADA PROMPT:\nCada prompt de imagen DEBE incluir en este orden:\nFondo: Color exacto (#F3F3F3) o gradiente específico\nBadge (si aplica): Tamaño, color #0E2D5F, número, posición exacta\nTítulo: Texto EXACTO entre comillas, color #0E2D5F, fuente, posición\nIlustración/Ícono: Descripción detallada, colores (#0E2D5F y #CED7E4), estilo (line-art 3px), posición\nTexto descriptivo (si aplica): Texto EXACTO, color #0E2D5F 80% opacidad, fuente, posición\nBranding: \"texto PROYEXAPP en fuente sans-serif bold color #0E2D5F en esquina inferior derecha a 15px de los bordes\"\nRestricciones: \"sin fotografías, sin bordes, estilo profesional minimalista, padding del 20%\"\nEspecificaciones técnicas: Contraste, legibilidad, estilo general\nEJEMPLO DE PROMPT PERFECTO PARA SLIDE DE CONTENIDO:\n\"Fondo limpio sólido color #F3F3F3, badge circular de 50x50px color sólido #0E2D5F con número 2 en blanco bold sans-serif dentro posicionado en esquina superior derecha con sombra suave rgba(14,45,95,0.2), texto del título en sans-serif bold NO VALIDAR TU IDEA en color #0E2D5F en mayúsculas centrado a 80px desde arriba, ilustración line-art centrada de portapapeles con ícono de signo de interrogación en color #CED7E4 con trazo de 3px y silueta de persona confundida en contorno también en #CED7E4 mostrando concepto de incertidumbre, texto descriptivo en sans-serif limpio Lanzar sin investigar el mercado es construir sin base en color #0E2D5F con 80% de opacidad máximo 2 líneas centrado debajo de la ilustración, forma de rectángulo redondeado sutil en #CED7E4 con 20% de opacidad detrás de la ilustración como acento, texto PROYEXAPP en fuente sans-serif bold color #0E2D5F posicionado en esquina inferior derecha a 15px del borde derecho y 15px del borde inferior, sin fotografías, sin bordes decorativos, estilo tech startup profesional minimalista, márgenes de padding del 20% en todos los lados, alto contraste para visualización móvil, composición limpia\"\nAHORA GENERA:\nCopy de Instagram completo y atractivo\n25-30 hashtags relevantes\nJSON del carrusel con 4-5 slides\nCada prompt debe ser TAN detallado que una IA pueda generar la imagen exacta sin ambigüedad\nMÁXIMA consistencia visual entre todas las slides\nBranding \"PROYEXAPP\" en TODAS las slides sin excepción, debes ser muy claro y legible el español sin errores ortográficos y debes generar muy legible el texto que lleva cada prompt del carrousel para que nano banana no cometa errores ortográficos",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -288,
+        -96
+      ],
+      "id": "080709f0-a0b9-4f9a-8c01-d1a97a47e886",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        64
+      ],
+      "id": "9cc49cae-dbfc-4fad-bed8-a78188a2868a",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Oo7CxGhhpZZ7e2YI",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1de39c66-8c3a-4932-ad94-54fecc73dc1a",
+              "name": "hashtags",
+              "value": "={{ $('Transformar respuesta de gemini').item.json.hashtags }}",
+              "type": "string"
+            },
+            {
+              "id": "8c681bf2-af31-40fb-98ed-dd3ea70b3b7e",
+              "name": "copy",
+              "value": "={{ $('Transformar respuesta de gemini').item.json.copy }}",
+              "type": "string"
+            },
+            {
+              "id": "8d146131-5edb-40dc-b7c8-9b9b479b7435",
+              "name": "carousel.carousel",
+              "value": "={{ $json.slides }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        -32
+      ],
+      "id": "c159b01d-5934-4e6d-b464-e07b66ad8dde",
+      "name": "Organizar Informacion"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener los datos del nodo anterior\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const output = item.json.output;\n  \n  // Extraer COPY_INSTAGRAM\n  const copyMatch = output.match(/---COPY_INSTAGRAM---\\n([\\s\\S]*?)(?=\\n---HASHTAGS_INSTAGRAM---|$)/);\n  const copy = copyMatch ? copyMatch[1].trim() : '';\n  \n  // Extraer HASHTAGS_INSTAGRAM\n  const hashtagsMatch = output.match(/---HASHTAGS_INSTAGRAM---\\n([\\s\\S]*?)(?=\\n---DISEÑO_CARRUSEL_JSON---|$)/);\n  const hashtags = hashtagsMatch ? hashtagsMatch[1].trim() : '';\n  const hashtagsArray = hashtags.split(/\\s+/).filter(h => h.startsWith('#'));\n  \n  // Extraer y parsear DISEÑO_CARRUSEL_JSON\n  const carouselMatch = output.match(/---DISEÑO_CARRUSEL_JSON---\\n([\\s\\S]*?)$/);\n  let carousel = null;\n  \n  if (carouselMatch) {\n    try {\n      carousel = JSON.parse(carouselMatch[1].trim());\n    } catch (e) {\n      console.error('Error parseando JSON del carrusel:', e.message);\n    }\n  }\n  \n  // Crear objeto con los datos parseados\n  results.push({\n    json: {\n      copy: copy,\n      hashtags: hashtags,\n      hashtagsArray: hashtagsArray,\n      carousel: carousel,\n      // También incluir las slides individuales para fácil acceso\n      slides: carousel ? carousel.carousel : []\n    }\n  });\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        -16
+      ],
+      "id": "dbb86584-5897-4bd3-84aa-08f4e6512cd0",
+      "name": "Transformar respuesta de gemini"
+    },
+    {
+      "parameters": {
+        "content": "PROCESAR RESPUESTA DE LA IA\n",
+        "height": 368,
+        "width": 1312
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        64,
+        -144
+      ],
+      "typeVersion": 1,
+      "id": "87e80c98-c0a1-4483-8aa9-cc5651d5bf6c",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "GENERAR UN PROPMPT PARA GENERAR DISEÑOS EN INSTAGRAM",
+        "height": 448,
+        "width": 400,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -384,
+        -224
+      ],
+      "typeVersion": 1,
+      "id": "4ca7cea8-a04f-49d6-9de0-f4f87d8394ea",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1sZRVYNmOAOSJvFbsdB4Ep0Jvsk9kEVoy5CdEVZoKEu8",
+          "mode": "list",
+          "cachedResultName": "PUBLICACIONES INSTAGRAM",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sZRVYNmOAOSJvFbsdB4Ep0Jvsk9kEVoy5CdEVZoKEu8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sZRVYNmOAOSJvFbsdB4Ep0Jvsk9kEVoy5CdEVZoKEu8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "COPY": "={{ $json.copy }}",
+            "HASHTAGS": "={{ $json.hashtags }}",
+            "CARROUSEL PROMPT": "={{ $json.carousel.carousel.map(s => s.prompt) }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "COPY",
+              "displayName": "COPY",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "HASHTAGS",
+              "displayName": "HASHTAGS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "CARROUSEL PROMPT",
+              "displayName": "CARROUSEL PROMPT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1184,
+        -32
+      ],
+      "id": "ed6053d3-b52a-4d49-919d-fff04d20e949",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "7H4B3JyAgQuFEJJs",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener datos del nodo anterior\nconst items = $input.all();\nconst allPrompts = [];\n\nfor (const item of items) {\n  const carousel = item.json.carousel;\n  \n  if (carousel && carousel.carousel && Array.isArray(carousel.carousel)) {\n    carousel.carousel.forEach(slide => {\n      allPrompts.push({\n        slideNumber: slide.slide,\n        tipo: slide.tipo,\n        prompt: slide.prompt\n      });\n    });\n  }\n}\n\n// Retornar todo en un solo item\nreturn [{\n  json: {\n    totalSlides: allPrompts.length,\n    slides: allPrompts\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        -48
+      ],
+      "id": "74833b42-952b-44b5-8751-223af928abe9",
+      "name": "ORGANIZAR PROMPT DISEÑO"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "=CARROUSEL PROMPT",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1584,
+        -32
+      ],
+      "id": "1288799f-3f42-49de-96e7-3412d06d59ea",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1824,
+        -32
+      ],
+      "id": "0739c6f2-2d1c-4ab3-811e-d15bfc5ba977",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"nano-banana-pro\",\n  \"input\": {\n      \"prompt\": \"{{ $json[\"CARROUSEL PROMPT\"] }}\",\n    \"resolution\": \"1K\",\n      \"output_format\": \"png\",\n      \"image_size\": \"1:1\"\n    }\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2352,
+        16
+      ],
+      "id": "b72373f0-ef90-43bd-8656-cb8cf4e93f9d",
+      "name": "CREAR IMAGEN USANDO NANO BANANA",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "tLhf69wcFcEakXnU",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.kie.ai/api/v1/jobs/recordInfo?taskId={{ $json.data.taskId }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2672,
+        16
+      ],
+      "id": "fd899585-df98-4aa9-9c77-69d7581e398c",
+      "name": "TRAER IMAGEN GENERADA",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "tLhf69wcFcEakXnU",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.data.state }}",
+                    "rightValue": "success",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "628a6e93-ed30-441f-ac7c-61ad0a3b1105"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "success"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1f4f0bf3-9660-4121-baed-2fe44d6c15c6",
+                    "leftValue": "={{ $json.data.state }}",
+                    "rightValue": "waiting",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "waiting"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "cbe27c89-1e93-4a82-98a4-a7f005ee1698",
+                    "leftValue": "={{ $json.data.state }}",
+                    "rightValue": "generating",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "generating"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e84f41f0-6264-4a3b-bf83-5cd91fe711be",
+                    "leftValue": "={{ $json.data.state }}",
+                    "rightValue": "fail",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "fail"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        2976,
+        0
+      ],
+      "id": "1859c84a-1e56-4406-9517-e474bdd56873",
+      "name": "Switch"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3360,
+        16
+      ],
+      "id": "f76119f1-6bd4-4a76-8b34-691eb570f845",
+      "name": "Wait",
+      "webhookId": "ef94b57e-95fa-4e5a-8262-45900458a34c"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.data.failCode }}{{ $json.data.failMsg }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        3328,
+        272
+      ],
+      "id": "bdd30aaa-6753-4fc2-beab-a25917c827d9",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "url": "={{ JSON.parse($json.data.resultJson).resultUrls[0] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        3248,
+        -208
+      ],
+      "id": "153d6abc-eaae-4163-8035-c1fb591d8eab",
+      "name": "DESCARGAR IMAGEN GENERADA"
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "=PUBLICACION",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1q0ZfRmNXUex9orRuGNhQSsM1QPolaAfm",
+          "mode": "list",
+          "cachedResultName": "PUBLICACIONES_TIKTOK_IG",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1q0ZfRmNXUex9orRuGNhQSsM1QPolaAfm"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -624,
+        -80
+      ],
+      "id": "87f6cd5e-9174-4a9b-8c23-c04e92837a70",
+      "name": "Create folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "mwMioBbQRQcrqzLA",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "CREAR CARPETA EN DRIVE",
+        "height": 384,
+        "width": 288,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -720,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "d254dc28-3bd2-47ff-ad0e-1eff508d74fb",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Organizar Informacion').item.json.carousel.carousel[0].slideNumber }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        3648,
+        -208
+      ],
+      "id": "d6d72922-0848-4f7a-a256-13164eb232a9",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "mwMioBbQRQcrqzLA",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Se genera imagen usando API https://kie.ai/ con Nano Banana, se hace el GET de la imagen, se comprueba si ya se generó y se descarga la imagen, luego se manda al Drive a la carpeta generada al principio del flujo\n",
+        "height": 848,
+        "width": 1664,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2192,
+        -272
+      ],
+      "typeVersion": 1,
+      "id": "f6616a64-e3c0-4972-8b91-38448c19634c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "PROCESAR DE AUN PROMPT A LA VEZ",
+        "height": 480,
+        "width": 704,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1440,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "9e617d2f-c7fb-48e2-abc6-7c9ee756274c",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1040,
+        64
+      ],
+      "id": "cdc83033-066a-4cca-872a-36d0b3dcfac2",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a8bafaf7-3ada-47e4-8b42-1645128aa5ef",
+              "name": "id_folder",
+              "value": "={{ $json.parents[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "342180f4-61f6-4c1b-b0a3-c0fcc03fd263",
+              "name": "data",
+              "value": "={{ $('TRAER IMAGEN GENERADA').item.json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3632,
+        288
+      ],
+      "id": "2dceb159-fa89-4983-9098-30e805134b7b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "height": 624,
+        "width": 1664,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2192,
+        -944
+      ],
+      "typeVersion": 1,
+      "id": "ba5518df-2234-47cb-a834-f480f4767d8c",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2496,
+        -720
+      ],
+      "id": "657c16d2-86b7-4d41-99a3-2d37d7a3743a",
+      "name": "Aggregate"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Transformar respuesta de gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transformar respuesta de gemini": {
+      "main": [
+        [
+          {
+            "node": "ORGANIZAR PROMPT DISEÑO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Organizar Informacion": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ORGANIZAR PROMPT DISEÑO": {
+      "main": [
+        [
+          {
+            "node": "Organizar Informacion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CREAR IMAGEN USANDO NANO BANANA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CREAR IMAGEN USANDO NANO BANANA": {
+      "main": [
+        [
+          {
+            "node": "TRAER IMAGEN GENERADA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TRAER IMAGEN GENERADA": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "DESCARGAR IMAGEN GENERADA",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "TRAER IMAGEN GENERADA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create folder": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DESCARGAR IMAGEN GENERADA": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Create folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2918e358-ab69-4b90-8e52-bd05b2ec3efa",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "04a97b09f46005d0ebb8ed3bcb552465886a3147a71d6f4b0a670e60371cd5d3"
+  },
+  "id": "YTGuflMi3sKKjDi9",
+  "tags": []
+}
